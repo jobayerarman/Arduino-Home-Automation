@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Arduino HAP</title>
+
+    <script>
+      strRELAY1 = "";
+      strRELAY2 = "";
+      strRELAY3 = "";
+      strRELAY4 = "";
+      var RELAY1_state = 0;
+      var RELAY2_state = 0;
+      var RELAY3_state = 0;
+      var RELAY4_state = 0;
+      function GetArduinoIO() {
+        nocache = "&nocache=" + Math.random() * 10000;
+        var request = new XMLHttpRequest();
+        request.onreadystatechange = function() {
+          if (this.readyState == 4) {
+            if (this.status == 200) {
+              if (this.responseXML != null) {
+                // XML file received - RELAY states
+                var count;
+                // RELAY 1
+                if (this.responseXML.getElementsByTagName('RELAY')[0].childNodes[0].nodeValue === "on") {
+                  document.getElementById("RELAY1").innerHTML = "Relay 1 is ON";
+                  RELAY1_state = 1;
+                }
+                else {
+                  document.getElementById("RELAY1").innerHTML = "Relay 1 is OFF";
+                  RELAY1_state = 0;
+                }
+                // RELAY 2
+                if (this.responseXML.getElementsByTagName('RELAY')[1].childNodes[0].nodeValue === "on") {
+                  document.getElementById("RELAY2").innerHTML = "Relay 2 is ON";
+                  RELAY2_state = 1;
+                }
+                else {
+                  document.getElementById("RELAY2").innerHTML = "Relay 2 is OFF";
+                  RELAY2_state = 0;
+                }
+                // RELAY 3
+                if (this.responseXML.getElementsByTagName('RELAY')[2].childNodes[0].nodeValue === "on") {
+                  document.getElementById("RELAY3").innerHTML = "Relay 2 is ON";
+                  RELAY3_state = 1;
+                }
+                else {
+                  document.getElementById("RELAY3").innerHTML = "Relay 3 is OFF";
+                  RELAY3_state = 0;
+                }
+                // RELAY 4
+                if (this.responseXML.getElementsByTagName('RELAY')[3].childNodes[0].nodeValue === "on") {
+                  document.getElementById("RELAY4").innerHTML = "Relay 4 is ON";
+                  RELAY4_state = 1;
+                }
+                else {
+                  document.getElementById("RELAY4").innerHTML = "Relay 4 is OFF";
+                  RELAY4_state = 0;
+                }
+              }
+            }
+          }
+        }
+        // send HTTP GET request with RELAYs to switch on/off if any
+        request.open("GET", "ajax_inputs" + strRELAY1 + strRELAY2 + strRELAY3 + strRELAY4 + nocache, true);
+        request.send(null);
+        setTimeout('GetArduinoIO()', 1000);
+        strRELAY1 = "";
+        strRELAY2 = "";
+        strRELAY3 = "";
+        srtRELAY4 = "";
+      }
+      function GetButton1() {
+        if (RELAY1_state === 1) {
+          RELAY1_state = 0;
+          strRELAY1 = "&RELAY1=0";
+        }
+        else {
+          RELAY1_state = 1;
+          strRELAY1 = "&RELAY1=1";
+        }
+      }
+      function GetButton2() {
+        if (RELAY2_state === 1) {
+          RELAY2_state = 0;
+          strRELAY2 = "&RELAY2=0";
+        }
+        else {
+          RELAY2_state = 1;
+          strRELAY2 = "&RELAY2=1";
+        }
+      }
+      function GetButton3() {
+        if (RELAY3_state === 1) {
+          RELAY3_state = 0;
+          strRELAY3 = "&RELAY3=0";
+        }
+        else {
+          RELAY3_state = 1;
+          strRELAY3 = "&RELAY3=1";
+        }
+      }
+      function GetButton4() {
+        if (RELAY4_state === 1) {
+          RELAY4_state = 0;
+          strRELAY4 = "&RELAY4=0";
+        }
+        else {
+          RELAY3_state = 1;
+          strRELAY4 = "&RELAY4=1";
+        }
+      }
+    </script>
+
+    <style type="text/css">
+      body {
+        background-color: #FAF9F9;
+        text-align:right;
+      }
+      .clockStyle  {
+        background-color:#707070;
+        border:#999 3px inset;
+        padding:6px;
+        color:#00CCFF;
+        font-family:helvetica;
+        font-size:18px;
+        font-weight:bold;
+        letter-spacing: 3px;
+        display:inline;
+        margin: 10px 15px 0;
+      }
+      .IO_box {
+        float: center;
+        margin: 2% 20px 2px 42%;
+        border: 2px solid blue;
+        border-radius:15px;
+        padding: 0 5px 0 5px;
+        width: 140px;
+        box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+        background-color:solid blue;
+      }
+      h1 {
+        text-align: center;
+        font-size: 150%;
+        color: green;
+        margin: 5% 25px 0 0;
+      }
+      h2 {
+        text-align: center;
+        font-size: 85%;
+        color: #5734E6;
+        margin: 5px 0 5px 8px;
+      }
+      p, form, button {
+        font-family: helvetica;
+        color: #14396A !important;
+        font-size: 14px;
+        text-shadow: 1px 1px 0px #7CACDE;
+        box-shadow: 1px 1px 1px #BEE2F9;
+        padding: 10px 25px;
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        border: 2px solid #3866A3;
+        background: #63B8EE;
+        background: linear-gradient(top,  #63B8EE,  #468CCF);
+        background: -ms-linear-gradient(top,  #63B8EE,  #468CCF);
+        background: -webkit-gradient(linear, left top, left bottom, from(#63B8EE), to(#468CCF));
+        background: -moz-linear-gradient(top,  #63B8EE,  #468CCF);
+      }
+      p, form, button:hover {
+        color: #14396A !important;
+        background: #468CCF;
+        background: linear-gradient(top,  #468CCF,  #63B8EE);
+        background: -ms-linear-gradient(top,  #468CCF,  #63B8EE);
+        background: -webkit-gradient(linear, left top, left bottom, from(#468CCF), to(#63B8EE));
+        background: -moz-linear-gradient(top,  #468CCF,  #63B8EE);
+      }
+      .small_text   {
+        font-size: 70%;
+        color: #737373;
+      }
+      </style>
+  </head>
+
+  <body onload="GetArduinoIO()">
+
+    <div id="clockDisplay" class="clockStyle"></div>
+    <!-- script for clock  -->
+    <script type="text/javascript" language="javascript">
+      function renderTime() {
+        var currentTime  = new Date();
+        var diem   = 'AM';
+        var h    = currentTime.getHours();
+        var m    = currentTime.getMinutes();
+        var s    = currentTime.getSeconds();
+
+
+        if  (h == 0) {
+              h = 12;
+        }
+        else if (h > 12) {
+              h = h - 12
+              diem = 'PM';
+        }
+        if (h < 10) {
+            h = '0' + h;
+        }
+
+        if (m < 10) {
+            m = '0' + m;
+        }
+        if (s < 10) {
+            s = '0' + s;
+        }
+        var myClock = document.getElementById('clockDisplay');
+        myClock.textContent = h + ':' + m + ':' + s + ' ' + diem;
+        myClock.innerText   = h + ':' + m + ':' + s + ' ' + diem;
+        setTimeout('renderTime()',1000);
+      }
+      renderTime();
+    </script>
+
+    <h1>Arduino Home Automation Panel</h1>
+
+    <div class="IO_box">
+      <h2>Buttons</h2>
+      <button type="button" id="RELAY1" onclick="GetButton1()">Light is OFF</button><br><br>
+      <button type="button" id="RELAY2" onclick="GetButton2()">Fan is OFF</button><br><br>
+      <button type="button" id="RELAY3" onclick="GetButton3()">Button 3 is OFF</button><br><br>
+      <button type="button" id="RELAY4" onclick="GetButton4()">Button 4 is OFF</button><br><br>
+    </div>
+  </body>
+</html>
