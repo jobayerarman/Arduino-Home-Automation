@@ -1,75 +1,92 @@
 <!DOCTYPE html>
 <html>
-  <head>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title>Arduino HAP</title>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
+  <title>Arduino HAP</title>
 
-    <script>
-      strRELAY1 = "";
-      strRELAY2 = "";
-      strRELAY3 = "";
-      strRELAY4 = "";
-      var RELAY1_state = 0;
-      var RELAY2_state = 0;
-      var RELAY3_state = 0;
-      var RELAY4_state = 0;
-      function GetArduinoIO() {
-        nocache = "&nocache=" + Math.random() * 10000;
-        var request = new XMLHttpRequest();
-        request.onreadystatechange = function() {
-          if (this.readyState == 4) {
-            if (this.status == 200) {
-              if (this.responseXML != null) {
+  <script>
+    strRELAY1 = "";
+    strRELAY2 = "";
+    strRELAY3 = "";
+    strRELAY4 = "";
+    strRELAY5 = "";
+    var RELAY1_state = 0;
+    var RELAY2_state = 0;
+    var RELAY3_state = 0;
+    var RELAY4_state = 0;
+    var RELAY5_state = 0;
+    function GetArduinoIO() {
+      nocache = "&nocache=" + Math.random() * 10000;
+      var request = new XMLHttpRequest();
+      request.onreadystatechange = function() {
+        if (this.readyState == 4) {
+          if (this.status == 200) {
+            if (this.responseXML != null) {
                 // XML file received - RELAY states
                 var count;
+                // Temperature
+                document.getElementById("celsius").innerHTML = this.responseXML.getElementsByTagName('temp')[0].childNodes[0].nodeValue;
+
                 // RELAY 1
                 if (this.responseXML.getElementsByTagName('RELAY')[0].childNodes[0].nodeValue === "on") {
-                  document.getElementById("RELAY1").innerHTML = "Relay 1 is ON";
+                  document.getElementById("RELAY1").innerHTML = "ON";
                   RELAY1_state = 1;
                 }
                 else {
-                  document.getElementById("RELAY1").innerHTML = "Relay 1 is OFF";
+                  document.getElementById("RELAY1").innerHTML = "OFF";
                   RELAY1_state = 0;
                 }
                 // RELAY 2
                 if (this.responseXML.getElementsByTagName('RELAY')[1].childNodes[0].nodeValue === "on") {
-                  document.getElementById("RELAY2").innerHTML = "Relay 2 is ON";
+                  document.getElementById("RELAY2").innerHTML = "ON";
                   RELAY2_state = 1;
                 }
                 else {
-                  document.getElementById("RELAY2").innerHTML = "Relay 2 is OFF";
+                  document.getElementById("RELAY2").innerHTML = "OFF";
                   RELAY2_state = 0;
                 }
                 // RELAY 3
                 if (this.responseXML.getElementsByTagName('RELAY')[2].childNodes[0].nodeValue === "on") {
-                  document.getElementById("RELAY3").innerHTML = "Relay 2 is ON";
+                  document.getElementById("RELAY3").innerHTML = "ON";
                   RELAY3_state = 1;
                 }
                 else {
-                  document.getElementById("RELAY3").innerHTML = "Relay 3 is OFF";
+                  document.getElementById("RELAY3").innerHTML = "OFF";
                   RELAY3_state = 0;
                 }
                 // RELAY 4
                 if (this.responseXML.getElementsByTagName('RELAY')[3].childNodes[0].nodeValue === "on") {
-                  document.getElementById("RELAY4").innerHTML = "Relay 4 is ON";
+                  document.getElementById("RELAY4").innerHTML = "ON";
                   RELAY4_state = 1;
                 }
                 else {
-                  document.getElementById("RELAY4").innerHTML = "Relay 4 is OFF";
+                  document.getElementById("RELAY4").innerHTML = "OFF";
                   RELAY4_state = 0;
+                }
+                // RELAY 5
+                if (this.responseXML.getElementsByTagName('RELAY')[4].childNodes[0].nodeValue === "on") {
+                  document.getElementById("RELAY5").innerHTML = "ON";
+                  RELAY5_state = 1;
+                }
+                else {
+                  document.getElementById("RELAY5").innerHTML = "OFF";
+                  RELAY5_state = 0;
                 }
               }
             }
           }
         }
         // send HTTP GET request with RELAYs to switch on/off if any
-        request.open("GET", "ajax_inputs" + strRELAY1 + strRELAY2 + strRELAY3 + strRELAY4 + nocache, true);
+        request.open("GET", "buttons" + strRELAY1 + strRELAY2 + strRELAY3 + strRELAY4 + strRELAY5 + nocache, true);
         request.send(null);
         setTimeout('GetArduinoIO()', 1000);
         strRELAY1 = "";
         strRELAY2 = "";
         strRELAY3 = "";
-        srtRELAY4 = "";
+        strRELAY4 = "";
+        strRELAY5 = "";
       }
       function GetButton1() {
         if (RELAY1_state === 1) {
@@ -107,81 +124,136 @@
           strRELAY4 = "&RELAY4=0";
         }
         else {
-          RELAY3_state = 1;
+          RELAY4_state = 1;
           strRELAY4 = "&RELAY4=1";
         }
       }
+      function GetButton5() {
+        if (RELAY5_state === 1) {
+          RELAY5_state = 0;
+          strRELAY5 = "&RELAY5=0";
+        }
+        else {
+          RELAY5_state = 1;
+          strRELAY5 = "&RELAY5=1";
+        }
+      }
     </script>
-
     <style type="text/css">
       body {
-        background-color: #FAF9F9;
-        text-align:right;
+        background-color: #333333;
       }
-      .clockStyle  {
-        background-color:#707070;
-        border:#999 3px inset;
-        padding:6px;
-        color:#00CCFF;
-        font-family:helvetica;
-        font-size:18px;
-        font-weight:bold;
+      .temperature {
+        font-family: Tahoma, Geneva, sans-serif;
+        border: #999 5px inset;
+        margin: 0 15px 0;
+        padding: 4px;
+        position: fixed;
+        display: inline;
+        text-align: center;
+        top: 2px;
+        left: auto;
+        right: auto;
+        bottom: auto;
+      }
+      .temperature a {
+        font-size: 16px;
+        font-weight: normal;
+        color: #096;
+      }
+      .temperature temp span {
+        color: #999;
+        font-size: 20px;
+        text-align: left;
+        width: 100%;
+        display: inline;
+      }
+      .temperature temp sup {
+        color: #FF9900;
+        font-size: 10px;
+        font-weight: bold;
+        text-align: left;
+      }
+      .clockStyle {
+        font-family: Tahoma, Geneva, sans-serif;
+        font-size: 15px;
+        font-weight: bold;
         letter-spacing: 3px;
-        display:inline;
-        margin: 10px 15px 0;
+        border: #999 5px inset;
+        margin: 0px 15px 0;
+        padding: 7px;
+        color: #009933;
+        display: inline;
+        top: 2px;
+        position: fixed;
+        right: 0%;
       }
       .IO_box {
-        float: center;
-        margin: 2% 20px 2px 42%;
-        border: 2px solid blue;
-        border-radius:15px;
-        padding: 0 5px 0 5px;
-        width: 140px;
-        box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
-        background-color:solid blue;
+        border: 4px solid #096;
+        border-radius: 25px;
+        padding: 5px 10px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 230px;
+        background-color: #333;
+        -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+        -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+        box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+        text-align: right;
       }
+      .IO_box p {
+        font-family: Georgia, "Times New Roman", Times, serif;
+        color: #3F9;
+        margin: 1% 1% 0;
+        font-size: 18px;
+        float: left;
+      }
+
       h1 {
         text-align: center;
-        font-size: 150%;
-        color: green;
-        margin: 5% 25px 0 0;
+        font-size: 30px;
+        color: #FFF;
+        margin: 50px auto 2% auto;
+        background-color: #333;
+        font-family: Tahoma, Geneva, sans-serif;
+        border-radius: 10px;
+        padding: 10px;
       }
       h2 {
         text-align: center;
-        font-size: 85%;
-        color: #5734E6;
-        margin: 5px 0 5px 8px;
+        color: #33FF66;
+        margin-top: 4%;
+        font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+        font-size: 20px;
       }
-      p, form, button {
+      button {
         font-family: helvetica;
-        color: #14396A !important;
+        color: #333 !important;
         font-size: 14px;
-        text-shadow: 1px 1px 0px #7CACDE;
         box-shadow: 1px 1px 1px #BEE2F9;
         padding: 10px 25px;
+        border-radius: 10px;
         -moz-border-radius: 10px;
         -webkit-border-radius: 10px;
-        border-radius: 10px;
-        border: 2px solid #3866A3;
         background: #63B8EE;
-        background: linear-gradient(top,  #63B8EE,  #468CCF);
-        background: -ms-linear-gradient(top,  #63B8EE,  #468CCF);
+        background: linear-gradient(top, #83B8EE, #468CCF);
+        background: -ms-linear-gradient(top, #63B8EE, #468CCF);
         background: -webkit-gradient(linear, left top, left bottom, from(#63B8EE), to(#468CCF));
-        background: -moz-linear-gradient(top,  #63B8EE,  #468CCF);
+        background: -moz-linear-gradient(top, #63B8EE, #468CCF);
+        border: 3px solid #333;
+        margin: 0 0 10px;
       }
-      p, form, button:hover {
+
+      button:hover {
         color: #14396A !important;
         background: #468CCF;
-        background: linear-gradient(top,  #468CCF,  #63B8EE);
-        background: -ms-linear-gradient(top,  #468CCF,  #63B8EE);
+        cursor: pointer;
+        background: linear-gradient(top, #468CCF, #63B8EE);
+        background: -ms-linear-gradient(top, #468CCF, #63B8EE);
         background: -webkit-gradient(linear, left top, left bottom, from(#468CCF), to(#63B8EE));
-        background: -moz-linear-gradient(top,  #468CCF,  #63B8EE);
+        background: -moz-linear-gradient(top, #468CCF, #63B8EE);
       }
-      .small_text   {
-        font-size: 70%;
-        color: #737373;
-      }
-      </style>
+    </style>
   </head>
 
   <body onload="GetArduinoIO()">
@@ -189,11 +261,11 @@
     <div id="clockDisplay" class="clockStyle"></div>
     <!-- script for clock  -->
     <script type="text/javascript" language="javascript">
-      function renderTime() {
+    function renderTime() {
         var currentTime  = new Date();
         var diem   = 'AM';
         var h    = currentTime.getHours();
-        var m    = currentTime.getMinutes();
+        var m      = currentTime.getMinutes();
         var s    = currentTime.getSeconds();
 
 
@@ -218,18 +290,34 @@
         myClock.textContent = h + ':' + m + ':' + s + ' ' + diem;
         myClock.innerText   = h + ':' + m + ':' + s + ' ' + diem;
         setTimeout('renderTime()',1000);
+
       }
       renderTime();
     </script>
 
+    <div class="temperature">
+      <temp>
+      <a> Home Temperature: </a>
+      <span id="celsius">...</span>
+      <sup id="deg">&deg;C</sup>
+      </temp>
+    </div>
+
     <h1>Arduino Home Automation Panel</h1>
 
     <div class="IO_box">
-      <h2>Buttons</h2>
-      <button type="button" id="RELAY1" onclick="GetButton1()">Light is OFF</button><br><br>
-      <button type="button" id="RELAY2" onclick="GetButton2()">Fan is OFF</button><br><br>
-      <button type="button" id="RELAY3" onclick="GetButton3()">Button 3 is OFF</button><br><br>
-      <button type="button" id="RELAY4" onclick="GetButton4()">Button 4 is OFF</button><br><br>
+      <h2>Lights</h2>
+      <p>Living Room</p>
+      <button type="button" id="RELAY1" onclick="GetButton1()">OFF</button><br>
+      <p>Master Bed</p>
+      <button type="button" id="RELAY2" onclick="GetButton2()">OFF</button><br>
+      <p>Guest Room</p>
+      <button type="button" id="RELAY3" onclick="GetButton3()">OFF</button><br>
+      <p>Kitchen</p>
+      <button type="button" id="RELAY4" onclick="GetButton4()">OFF</button><br>
+      <p>Wash Room</p>
+      <button type="button" id="RELAY5" onclick="GetButton5()">OFF</button><br>
     </div>
+
   </body>
 </html>

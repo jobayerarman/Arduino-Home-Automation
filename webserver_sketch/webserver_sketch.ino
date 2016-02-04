@@ -26,10 +26,15 @@
   Date:         4 April 2013
   Modified:     19 June 2013
                 - removed use of the String class
-                16 Sep  2015
+
+                04 May  2014
                 - analog output removed
                 - switch removed
                 - description update
+                28 March 2015
+                - Temperature sensor added
+                - Redesigned website
+                - Minor bug fixes
 
   Author:       W.A. Smith, http://startingelectronics.com
   --------------------------------------------------------------*/
@@ -37,15 +42,17 @@
 #include <SPI.h>
 #include <Ethernet.h>
 #include <SD.h>
+#include <Thermistor.h>
 
 // size of buffer used to capture HTTP requests
 #define REQ_BUF_SZ   60
 
+Thermistor temp(2);
 
 // MAC address from Ethernet shield sticker under board
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 // IP address, may need to change depending on network
-IPAddress ip(192, 168, 1, 120);
+IPAddress ip(192, 168, 0, 120);
 // create a server at port 80
 EthernetServer server(80);
 // the web page file on the SD card
@@ -62,7 +69,8 @@ void setup() {
     pinMode(10, OUTPUT);
     digitalWrite(10, HIGH);
 
-    // RELAYs
+    // Switches
+    pinMode(5, OUTPUT);
     pinMode(6, OUTPUT);
     pinMode(7, OUTPUT);
     pinMode(8, OUTPUT);
@@ -98,7 +106,7 @@ void loop() {
                     // web page or XML page is requested
                     // Ajax request - send XML file
 
-                    if (StrContains(HTTP_req, "ajax_inputs")) {
+                    if (StrContains(HTTP_req, "buttons")) {
                         // send rest of HTTP header
                         client.println("Content-Type: text/xml");
                         client.println("Connection: keep-alive");
@@ -149,54 +157,69 @@ void loop() {
 // checks if received HTTP request is switching on/off RELAYs
 // also saves the state of the RELAYs
 void SetRELAYs(void) {
-    // RELAY 1 (pin 6)
+    // Living Room (pin 5)
     if (StrContains(HTTP_req, "RELAY1=1")) {
-        RELAY_state[0] = 1;         // save RELAY 1 state to On
-        digitalWrite(6, HIGH);
+        RELAY_state[0] = 1;         // save Switch 1 state to On
+        digitalWrite(5, HIGH);
     }
     else if (StrContains(HTTP_req, "RELAY1=0")) {
-        RELAY_state[0] = 0;     // save RELAY 1 state to OFF
+        RELAY_state[0] = 0;     // save Switch 1 state to OFF
+        digitalWrite(5, LOW);
+    }
+
+    // Master Bed (pin 6)
+    if (StrContains(HTTP_req, "RELAY2=1")) {
+        RELAY_state[1] = 1;         // save Switch 2 state to On
+        digitalWrite(6, HIGH);
+    }
+    else if (StrContains(HTTP_req, "RELAY2=0")) {
+        RELAY_state[1] = 0;     // save Switch 2 state to Off
         digitalWrite(6, LOW);
     }
 
-    // RELAY 2 (pin 7)
-    if (StrContains(HTTP_req, "RELAY2=1")) {
-        RELAY_state[1] = 1;         // save RELAY 2 state to On
-        digitalWrite(7, HIGH);
-    }
-    else if (StrContains(HTTP_req, "RELAY2=0")) {
-        RELAY_state[1] = 0;     // save RELAY 2 state to Off
-        digitalWrite(7, LOW);
-    }
-
-    // RELAY 3 (pin 8)
+    // Guest Room (pin 9)
     if (StrContains(HTTP_req, "RELAY3=1")) {
-        RELAY_state[2] = 1;         // save RELAY 3 state to On
-        digitalWrite(8, HIGH);
+        RELAY_state[2] = 1;         // save Switch 3 state to On
+        digitalWrite(9, HIGH);
     }
     else if (StrContains(HTTP_req, "RELAY3=0")) {
-        RELAY_state[2] = 0;     // save RELAY 3 state to Off
+        RELAY_state[2] = 0;     // save Switch 3 state to Off
+        digitalWrite(9, LOW);
+    }
+
+    // Kitchen (pin 7)
+    if (StrContains(HTTP_req, "RELAY4=1")) {
+        RELAY_state[3] = 1;         // save Switch 4 state to On
+        digitalWrite(8, HIGH);
+    }
+    else if (StrContains(HTTP_req, "RELAY4=0")) {
+        RELAY_state[3] = 0;     // save Switch 4 state to Off
         digitalWrite(8, LOW);
     }
 
-    // RELAY 3 (pin 9)
-    if (StrContains(HTTP_req, "RELAY4=1")) {
-        RELAY_state[3] = 1;         // save RELAY 4 state to On
-        digitalWrite(9, HIGH);
+    // Wash Room (pin 9)
+    if (StrContains(HTTP_req, "RELAY5=1")) {
+        RELAY_state[4] = 1;         // save Switch 5 state to On
+        digitalWrite(7, HIGH);
     }
-    else if (StrContains(HTTP_req, "RELAY4=0")) {
-        RELAY_state[3] = 0;     // save RELAY 4 state to Off
-        digitalWrite(9, LOW);
+    else if (StrContains(HTTP_req, "RELAY5=0")) {
+        RELAY_state[4] = 0;     // save Switch 5 state to Off
+        digitalWrite(7, LOW);
     }
 }
 
-// send the XML file with RELAY status
+// send the XML file with Temperature and Switch status
 void XML_response(EthernetClient cl) {
+    byte celsius = temp.getTemp();
+
     cl.print("<?xml version = \"1.0\" ?>");
     cl.print("<inputs>");
 
-        // button states
-        // RELAY1
+        cl.print("<temp>");
+        cl.print(celsius);
+        cl.print("</temp>");
+
+        // Switch1
         cl.print("<RELAY>");
         if (RELAY_state[0]) {
             cl.print("on");
@@ -206,7 +229,7 @@ void XML_response(EthernetClient cl) {
         }
         cl.println("</RELAY>");
 
-        // RELAY2
+        // Switch2
         cl.print("<RELAY>");
         if (RELAY_state[1]) {
             cl.print("on");
@@ -216,7 +239,7 @@ void XML_response(EthernetClient cl) {
         }
         cl.println("</RELAY>");
 
-        // RELAY3
+        // Switch3
         cl.print("<RELAY>");
         if (RELAY_state[2]) {
             cl.print("on");
@@ -226,13 +249,23 @@ void XML_response(EthernetClient cl) {
         }
         cl.println("</RELAY>");
 
-        // RELAY2
+        // Switch4
         cl.print("<RELAY>");
         if (RELAY_state[3]) {
             cl.print("on");
         }
         else {
            cl.print("off");
+        }
+        cl.println("</RELAY>");
+
+        // Switch5
+        cl.print("<RELAY>");
+        if (RELAY_state[4]) {
+            cl.print("on");
+        }
+        else {
+            cl.print("off");
         }
         cl.println("</RELAY>");
 
