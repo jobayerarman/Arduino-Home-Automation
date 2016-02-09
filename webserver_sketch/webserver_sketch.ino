@@ -36,6 +36,10 @@
                 - Redesigned website
                 - Minor bug fixes
 
+                10 Feb 2016
+                - refactored XML response
+                - unused variable removed (index.htm)
+
   Author:       W.A. Smith, http://startingelectronics.com
   --------------------------------------------------------------*/
 
@@ -46,6 +50,7 @@
 
 // size of buffer used to capture HTTP requests
 #define REQ_BUF_SZ   60
+#define BTN_NUM       5
 
 Thermistor temp(2);
 
@@ -62,7 +67,7 @@ char HTTP_req[REQ_BUF_SZ] = {0};
 // index into HTTP_req buffer
 char req_index = 0;
 // stores the states of the RELAYs
-boolean RELAY_state[4] = {0};
+boolean RELAY_state[BTN_NUM] = {0};
 
 void setup() {
     // disable Ethernet chip
@@ -85,6 +90,7 @@ void loop() {
 
     if (client) {  // got client?
         boolean currentLineIsBlank = true;
+
         while (client.connected()) {
             if (client.available()) {   // client data available to read
                 char c = client.read(); // read 1 byte (character) from client
@@ -106,7 +112,7 @@ void loop() {
                     // web page or XML page is requested
                     // Ajax request - send XML file
 
-                    if (StrContains(HTTP_req, "buttons")) {
+                    if (StrContains(HTTP_req, "button_state")) {
                         // send rest of HTTP header
                         client.println("Content-Type: text/xml");
                         client.println("Connection: keep-alive");
@@ -219,55 +225,16 @@ void XML_response(EthernetClient cl) {
         cl.print(celsius);
         cl.print("</temp>");
 
-        // Switch1
-        cl.print("<RELAY>");
-        if (RELAY_state[0]) {
-            cl.print("on");
+        for(int i = 0; i < BTN_NUM; i++) {
+            cl.print("<RELAY>");
+            if (RELAY_state[i]) {
+                cl.print("on");
+            }
+            else {
+                cl.print("off");
+            }
+            cl.println("</RELAY>");
         }
-        else {
-            cl.print("off");
-        }
-        cl.println("</RELAY>");
-
-        // Switch2
-        cl.print("<RELAY>");
-        if (RELAY_state[1]) {
-            cl.print("on");
-        }
-        else {
-           cl.print("off");
-        }
-        cl.println("</RELAY>");
-
-        // Switch3
-        cl.print("<RELAY>");
-        if (RELAY_state[2]) {
-            cl.print("on");
-        }
-        else {
-           cl.print("off");
-        }
-        cl.println("</RELAY>");
-
-        // Switch4
-        cl.print("<RELAY>");
-        if (RELAY_state[3]) {
-            cl.print("on");
-        }
-        else {
-           cl.print("off");
-        }
-        cl.println("</RELAY>");
-
-        // Switch5
-        cl.print("<RELAY>");
-        if (RELAY_state[4]) {
-            cl.print("on");
-        }
-        else {
-            cl.print("off");
-        }
-        cl.println("</RELAY>");
 
     cl.print("</inputs>");
 }

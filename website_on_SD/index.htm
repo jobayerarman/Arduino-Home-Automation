@@ -24,8 +24,8 @@
         if (this.readyState == 4) {
           if (this.status == 200) {
             if (this.responseXML != null) {
-                // XML file received - RELAY states
-                var count;
+                // XML file received
+
                 // Temperature
                 document.getElementById("celsius").innerHTML = this.responseXML.getElementsByTagName('temp')[0].childNodes[0].nodeValue;
 
@@ -79,15 +79,16 @@
           }
         }
         // send HTTP GET request with RELAYs to switch on/off if any
-        request.open("GET", "buttons" + strRELAY1 + strRELAY2 + strRELAY3 + strRELAY4 + strRELAY5 + nocache, true);
+        request.open("GET", "button_state" + strRELAY1 + strRELAY2 + strRELAY3 + strRELAY4 + strRELAY5 + nocache, true);
         request.send(null);
-        setTimeout('GetArduinoIO()', 1000);
+        setTimeout('GetArduinoIO()', 800);
         strRELAY1 = "";
         strRELAY2 = "";
         strRELAY3 = "";
         strRELAY4 = "";
         strRELAY5 = "";
       }
+
       function GetButton1() {
         if (RELAY1_state === 1) {
           RELAY1_state = 0;
@@ -139,6 +140,7 @@
         }
       }
     </script>
+
     <style type="text/css">
       body {
         background-color: #333333;
@@ -156,10 +158,11 @@
         right: auto;
         bottom: auto;
       }
-      .temperature a {
+      .temperature p {
         font-size: 16px;
         font-weight: normal;
         color: #096;
+        display: inline;
       }
       .temperature temp span {
         color: #999;
@@ -263,9 +266,9 @@
     <script type="text/javascript" language="javascript">
     function renderTime() {
         var currentTime  = new Date();
-        var diem   = 'AM';
+        var diem = 'AM';
         var h    = currentTime.getHours();
-        var m      = currentTime.getMinutes();
+        var m    = currentTime.getMinutes();
         var s    = currentTime.getSeconds();
 
 
@@ -297,9 +300,9 @@
 
     <div class="temperature">
       <temp>
-      <a> Home Temperature: </a>
-      <span id="celsius">...</span>
-      <sup id="deg">&deg;C</sup>
+        <p> Home Temperature: </p>
+        <span id="celsius">...</span>
+        <sup id="deg">&deg;C</sup>
       </temp>
     </div>
 
