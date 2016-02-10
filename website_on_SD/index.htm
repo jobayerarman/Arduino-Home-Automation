@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -142,185 +142,79 @@
     </script>
 
     <style type="text/css">
-      body {
-        background-color: #333333;
-      }
-      .temperature {
-        font-family: Tahoma, Geneva, sans-serif;
-        border: #999 5px inset;
-        margin: 0 15px 0;
-        padding: 4px;
-        position: fixed;
-        display: inline;
-        text-align: center;
-        top: 2px;
-        left: auto;
-        right: auto;
-        bottom: auto;
-      }
-      .temperature p {
-        font-size: 16px;
-        font-weight: normal;
-        color: #096;
-        display: inline;
-      }
-      .temperature temp span {
-        color: #999;
-        font-size: 20px;
-        text-align: left;
-        width: 100%;
-        display: inline;
-      }
-      .temperature temp sup {
-        color: #FF9900;
-        font-size: 10px;
-        font-weight: bold;
-        text-align: left;
-      }
-      .clockStyle {
-        font-family: Tahoma, Geneva, sans-serif;
-        font-size: 15px;
-        font-weight: bold;
-        letter-spacing: 3px;
-        border: #999 5px inset;
-        margin: 0px 15px 0;
-        padding: 7px;
-        color: #009933;
-        display: inline;
-        top: 2px;
-        position: fixed;
-        right: 0%;
-      }
-      .IO_box {
-        border: 4px solid #096;
-        border-radius: 25px;
-        padding: 5px 10px;
-        margin-left: auto;
-        margin-right: auto;
-        width: 230px;
-        background-color: #333;
-        -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
-        -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
-        box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
-        text-align: right;
-      }
-      .IO_box p {
-        font-family: Georgia, "Times New Roman", Times, serif;
-        color: #3F9;
-        margin: 1% 1% 0;
-        font-size: 18px;
-        float: left;
-      }
-
-      h1 {
-        text-align: center;
-        font-size: 30px;
-        color: #FFF;
-        margin: 50px auto 2% auto;
-        background-color: #333;
-        font-family: Tahoma, Geneva, sans-serif;
-        border-radius: 10px;
-        padding: 10px;
-      }
-      h2 {
-        text-align: center;
-        color: #33FF66;
-        margin-top: 4%;
-        font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
-        font-size: 20px;
-      }
-      button {
-        font-family: helvetica;
-        color: #333 !important;
-        font-size: 14px;
-        box-shadow: 1px 1px 1px #BEE2F9;
-        padding: 10px 25px;
-        border-radius: 10px;
-        -moz-border-radius: 10px;
-        -webkit-border-radius: 10px;
-        background: #63B8EE;
-        background: linear-gradient(top, #83B8EE, #468CCF);
-        background: -ms-linear-gradient(top, #63B8EE, #468CCF);
-        background: -webkit-gradient(linear, left top, left bottom, from(#63B8EE), to(#468CCF));
-        background: -moz-linear-gradient(top, #63B8EE, #468CCF);
-        border: 3px solid #333;
-        margin: 0 0 10px;
-      }
-
-      button:hover {
-        color: #14396A !important;
-        background: #468CCF;
-        cursor: pointer;
-        background: linear-gradient(top, #468CCF, #63B8EE);
-        background: -ms-linear-gradient(top, #468CCF, #63B8EE);
-        background: -webkit-gradient(linear, left top, left bottom, from(#468CCF), to(#63B8EE));
-        background: -moz-linear-gradient(top, #468CCF, #63B8EE);
-      }
+      @import url(https://fonts.googleapis.com/css?family=Lato:400,700,400italic);html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{margin:0}footer,nav,section{display:block}a{background-color:transparent}a:active,a:hover{outline:0}button{color:inherit;font:inherit;margin:0;overflow:visible;text-transform:none;-webkit-appearance:button;cursor:pointer}button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}table{border-collapse:collapse;border-spacing:0}td{padding:0}@media print{*,:after,:before{background:0 0!important;color:#000!important;box-shadow:none!important;text-shadow:none!important}a,a:visited{text-decoration:underline}a[href]:after{content:" (" attr(href) ")"}a[href^="#"]:after{content:""}tr{page-break-inside:avoid}h2,h3,p{orphans:3;widows:3}h2,h3{page-break-after:avoid}.navbar{display:none}.table{border-collapse:collapse!important}.table td{background-color:#fff!important}}*,:after,:before{-moz-box-sizing:border-box;box-sizing:border-box}html{font-size:10px;-webkit-tap-highlight-color:transparent}body{font-size:15px;line-height:1.42857143;color:#2c3e50;background-color:#fff}button{font-family:inherit;font-size:inherit;line-height:inherit}a{color:#18bc9c;text-decoration:none}a:focus,a:hover{color:#18bc9c;text-decoration:underline}a:focus{outline:dotted thin;outline:-webkit-focus-ring-color auto;outline-offset:-2px}h2,h3{font-family:Lato,"Helvetica Neue",Helvetica,Arial,sans-serif;font-weight:400;line-height:1.1;color:inherit;margin-top:21px;margin-bottom:10.5px}h2{font-size:32px}h3{font-size:26px}p{margin:0 0 10.5px}.text-center{text-align:center}.text-muted{color:#b4bcc2}ul{margin-top:0;margin-bottom:10.5px}.container{margin-right:auto;margin-left:auto;padding-left:15px;padding-right:15px}@media (min-width:768px){.container{width:750px}}@media (min-width:992px){.container{width:970px}}@media (min-width:1200px){.container{width:1170px}}.row{margin-left:-15px;margin-right:-15px}.col-lg-4,.col-lg-6,.col-md-4,.col-md-6{position:relative;min-height:1px;padding-left:15px;padding-right:15px}@media (min-width:992px){.col-md-4,.col-md-6{float:left}.col-md-6{width:50%}.col-md-4{width:33.33333333%}.col-md-offset-4{margin-left:33.33333333%}}@media (min-width:1200px){.col-lg-4,.col-lg-6{float:left}.col-lg-6{width:50%}.col-lg-4{width:33.33333333%}}table{background-color:transparent}.table{width:100%;max-width:100%;margin-bottom:21px}.table>tbody>tr>td{padding:8px;line-height:1.42857143;vertical-align:top}.table-striped>tbody>tr:nth-of-type(odd){background-color:#f9f9f9}.form-control::-moz-placeholder{color:#acb6c0;opacity:1}.form-control:-ms-input-placeholder{color:#acb6c0}.btn{display:inline-block;margin-bottom:0;font-weight:400;text-align:center;vertical-align:middle;-ms-touch-action:manipulation;touch-action:manipulation;cursor:pointer;background-image:none;border:1px solid transparent;white-space:nowrap;padding:10px 15px;font-size:15px;line-height:1.42857143;border-radius:4px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.btn:active:focus,.btn:focus{outline:dotted thin;outline:-webkit-focus-ring-color auto;outline-offset:-2px}.btn:focus,.btn:hover{color:#fff;text-decoration:none}.btn:active{outline:0}.btn-info{color:#fff;background-color:#3498db}.btn-info:focus{color:#fff;border-color:#16527a}.btn-info:active,.btn-info:hover{color:#fff;background-color:#217dbb;border-color:#2077b2}.btn-info:active:focus,.btn-info:active:hover{color:#fff;background-color:#1c699d;border-color:#16527a}.btn-info:active{background-image:none}.navbar{position:relative;min-height:60px;margin-bottom:21px;border:1px solid transparent}@media (min-width:768px){.navbar{border-radius:4px}}.navbar-default{background-color:#2c3e50;border-color:transparent}.panel{margin-bottom:21px;background-color:#fff;border:1px solid transparent;border-radius:4px}.panel-body{padding:15px}.panel-heading{padding:10px 15px;border-bottom:1px solid transparent;border-top-right-radius:3px;border-top-left-radius:3px}.panel-title{margin-top:0;margin-bottom:0;font-size:17px;color:inherit}.panel-primary{border-color:#2c3e50}.panel-primary>.panel-heading{color:#fff;background-color:#2c3e50;border-color:#2c3e50}.container:after,.container:before,.navbar:after,.navbar:before,.panel-body:after,.panel-body:before,.row:after,.row:before{content:" ";display:table}.container:after,.navbar:after,.panel-body:after,.row:after{clear:both}@-ms-viewport{width:device-width}.navbar{border-width:0}.btn{border-width:2px}.btn:active{box-shadow:none}.table>tbody>tr>td,table>tbody>tr>td{border:none}.btn-info{text-shadow:0 -1px 0 rgba(0,0,0,.2);box-shadow:inset 0 1px 0 rgba(255,255,255,.15),0 1px 1px rgba(0,0,0,.075)}.btn-info:active{box-shadow:inset 0 3px 5px rgba(0,0,0,.125)}.btn:active{background-image:none}.btn-info{background-image:-webkit-linear-gradient(top,#5bc0de 0,#2aabd2 100%);background-image:linear-gradient(to bottom,#5bc0de 0,#2aabd2 100%);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff5bc0de', endColorstr='#ff2aabd2', GradientType=0);filter:progid:DXImageTransform.Microsoft.gradient(enabled=false);background-repeat:repeat-x;border-color:#28a4c9}.btn-info:focus,.btn-info:hover{background-color:#2aabd2;background-position:0 -15px}.btn-info:active{background-color:#2aabd2;border-color:#28a4c9}.panel{box-shadow:0 1px 2px rgba(0,0,0,.05)}.panel-primary>.panel-heading{background-image:-webkit-linear-gradient(top,#2c3e50 0,#233140 100%);background-image:linear-gradient(to bottom,#2c3e50 0,#233140 100%);background-repeat:repeat-x;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff2c3e50', endColorstr='#ff233140', GradientType=0)}:focus{outline:0!important}body{font-family:Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;text-transform:uppercase;font-weight:700;background:#262626}.navbar{padding:10px 0 25px}.navbar *{color:#fff;font-weight:700;letter-spacing:2px}#control{background:#15a589;padding:20px;max-height:100%;margin-bottom:20px}button{width:70px}.table p{padding-top:12px}.table button{float:right}footer{padding:25px 20px 15px;max-height:100px;background:#354b60;color:#fff}footer p{padding-top:6px}footer ul{margin:0;padding:0;list-style:none}footer li{display:inline-block;margin-right:18px}@media (min-width:768px){.social{float:right}}@media (max-width:767px){h2,h3{font-size:2em;line-height:1.3}#control{margin-bottom:20px}footer{text-align:center;max-height:100%}}
     </style>
   </head>
 
   <body onload="GetArduinoIO()">
+    <div class="container">
+      <nav class="navbar navbar-default" role="navigation">
+        <div class="text-center">
+          <h2>Arduino Home Automation</h2>
+          <p>
+            <span id="celsius">Temperature</span>
+            <sup> &deg;C</sup>
+          </p>
+        </div>
+      </nav>
 
-    <div id="clockDisplay" class="clockStyle"></div>
-    <!-- script for clock  -->
-    <script type="text/javascript" language="javascript">
-    function renderTime() {
-        var currentTime  = new Date();
-        var diem = 'AM';
-        var h    = currentTime.getHours();
-        var m    = currentTime.getMinutes();
-        var s    = currentTime.getSeconds();
+      <section id="control">
+        <div class="row">
+          <div class="col-md-offset-4 col-md-4 col-lg-4">
 
+            <div class="panel panel-primary">
+              <div class="panel-heading">
+                <h3 class="panel-title text-center">Buttons</h3>
+              </div>
+              <div class="panel-body">
+                <table class="table table-striped">
+                  <tbody>
+                    <tr>
+                      <td><p>Button 1</p></td>
+                      <td><button type="button" id="RELAY1" class="btn btn-info" onclick="GetButton1()">Off</button></td>
+                    </tr>
+                    <tr>
+                      <td><p>Button 2</p></td>
+                      <td><button type="button" id="RELAY2" class="btn btn-info" onclick="GetButton2()">Off</button></td>
+                    </tr>
+                    <tr>
+                      <td><p>Button 3</p></td>
+                      <td><button type="button" id="RELAY3" class="btn btn-info" onclick="GetButton3()">Off</button></td>
+                    </tr>
+                    <tr>
+                      <td><p>Button 4 </p></td>
+                      <td><button type="button" id="RELAY4" class="btn btn-info" onclick="GetButton4()">Off</button></td>
+                    </tr>
+                    <tr>
+                      <td><p>Button 5</p></td>
+                      <td><button type="button" id="RELAY5" class="btn btn-info" onclick="GetButton5()">Off</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
 
-        if  (h == 0) {
-              h = 12;
-        }
-        else if (h > 12) {
-              h = h - 12
-              diem = 'PM';
-        }
-        if (h < 10) {
-            h = '0' + h;
-        }
+          </div>
+        </div>
+      </section>
 
-        if (m < 10) {
-            m = '0' + m;
-        }
-        if (s < 10) {
-            s = '0' + s;
-        }
-        var myClock = document.getElementById('clockDisplay');
-        myClock.textContent = h + ':' + m + ':' + s + ' ' + diem;
-        myClock.innerText   = h + ':' + m + ':' + s + ' ' + diem;
-        setTimeout('renderTime()',1000);
+      <footer>
+        <div class="row">
+          <div class="col-md-12 col-lg-12">
+            <p class="text-muted text-center">All Rights Reserved &copy; 2014 - 2016 | Jobayer Arman</p>
+          </div>
+        </div>
+      </footer>
 
-      }
-      renderTime();
-    </script>
-
-    <div class="temperature">
-      <temp>
-        <p> Home Temperature: </p>
-        <span id="celsius">...</span>
-        <sup id="deg">&deg;C</sup>
-      </temp>
     </div>
 
-    <h1>Arduino Home Automation Panel</h1>
+    <!-- Monserrat Font -->
+    <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
 
-    <div class="IO_box">
-      <h2>Lights</h2>
-      <p>Living Room</p>
-      <button type="button" id="RELAY1" onclick="GetButton1()">OFF</button><br>
-      <p>Master Bed</p>
-      <button type="button" id="RELAY2" onclick="GetButton2()">OFF</button><br>
-      <p>Guest Room</p>
-      <button type="button" id="RELAY3" onclick="GetButton3()">OFF</button><br>
-      <p>Kitchen</p>
-      <button type="button" id="RELAY4" onclick="GetButton4()">OFF</button><br>
-      <p>Wash Room</p>
-      <button type="button" id="RELAY5" onclick="GetButton5()">OFF</button><br>
-    </div>
+    <!-- jQuery -->
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <!-- Bootstrap JavaScript -->
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
   </body>
 </html>

@@ -37,7 +37,7 @@
                 - Minor bug fixes
 
                 10 Feb 2016
-                - refactored XML response
+                - refactored XML response function
                 - unused variable removed (index.htm)
 
   Author:       W.A. Smith, http://startingelectronics.com
