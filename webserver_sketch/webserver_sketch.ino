@@ -226,14 +226,14 @@ void XML_response(EthernetClient cl) {
         cl.print("</temp>");
 
         for(int i = 0; i < BTN_NUM; i++) {
-            cl.print("<RELAY>");
+            cl.print("<BUTTON>");
             if (RELAY_state[i]) {
                 cl.print("on");
             }
             else {
                 cl.print("off");
             }
-            cl.println("</RELAY>");
+            cl.println("</BUTTON>");
         }
 
     cl.print("</inputs>");

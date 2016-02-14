@@ -12,11 +12,9 @@
     strRELAY3 = "";
     strRELAY4 = "";
     strRELAY5 = "";
-    var RELAY1_state = 0;
-    var RELAY2_state = 0;
-    var RELAY3_state = 0;
-    var RELAY4_state = 0;
-    var RELAY5_state = 0;
+
+    var btn_state = [0];
+
     function GetArduinoIO() {
       nocache = "&nocache=" + Math.random() * 10000;
       var request = new XMLHttpRequest();
@@ -27,53 +25,28 @@
                 // XML file received
 
                 // Temperature
-                document.getElementById("celsius").innerHTML = this.responseXML.getElementsByTagName('temp')[0].childNodes[0].nodeValue;
+                document.getElementById("celsius").innerHTML = this.responseXML.getElementsByTagName("temp")[0].childNodes[0].nodeValue;
 
-                // RELAY 1
-                if (this.responseXML.getElementsByTagName('RELAY')[0].childNodes[0].nodeValue === "on") {
-                  document.getElementById("RELAY1").innerHTML = "ON";
-                  RELAY1_state = 1;
-                }
-                else {
-                  document.getElementById("RELAY1").innerHTML = "OFF";
-                  RELAY1_state = 0;
-                }
-                // RELAY 2
-                if (this.responseXML.getElementsByTagName('RELAY')[1].childNodes[0].nodeValue === "on") {
-                  document.getElementById("RELAY2").innerHTML = "ON";
-                  RELAY2_state = 1;
-                }
-                else {
-                  document.getElementById("RELAY2").innerHTML = "OFF";
-                  RELAY2_state = 0;
-                }
-                // RELAY 3
-                if (this.responseXML.getElementsByTagName('RELAY')[2].childNodes[0].nodeValue === "on") {
-                  document.getElementById("RELAY3").innerHTML = "ON";
-                  RELAY3_state = 1;
-                }
-                else {
-                  document.getElementById("RELAY3").innerHTML = "OFF";
-                  RELAY3_state = 0;
-                }
-                // RELAY 4
-                if (this.responseXML.getElementsByTagName('RELAY')[3].childNodes[0].nodeValue === "on") {
-                  document.getElementById("RELAY4").innerHTML = "ON";
-                  RELAY4_state = 1;
-                }
-                else {
-                  document.getElementById("RELAY4").innerHTML = "OFF";
-                  RELAY4_state = 0;
-                }
-                // RELAY 5
-                if (this.responseXML.getElementsByTagName('RELAY')[4].childNodes[0].nodeValue === "on") {
-                  document.getElementById("RELAY5").innerHTML = "ON";
-                  RELAY5_state = 1;
-                }
-                else {
-                  document.getElementById("RELAY5").innerHTML = "OFF";
-                  RELAY5_state = 0;
-                }
+                var response;
+                var num_BTNs;
+                var i;
+                var btnstr = "";
+
+                response = this.responseXML.getElementsByTagName('BUTTON');
+                num_BTNs = response.length;
+
+                for (var i = 0; i < num_BTNs; i++) {
+                  btnstr = "RELAY" + (i + 1);
+
+                  if (response[i].childNodes[0].nodeValue === "on") {
+                    document.getElementById(btnstr).innerHTML = "ON";
+                    btn_state[i] = 1;
+                  }
+                  else {
+                    document.getElementById(btnstr).innerHTML = "OFF";
+                    btn_state[i] = 0;
+                  };
+                };
               }
             }
           }
@@ -90,52 +63,52 @@
       }
 
       function GetButton1() {
-        if (RELAY1_state === 1) {
-          RELAY1_state = 0;
+        if (btn_state[0] === 1) {
+          btn_state[0] = 0;
           strRELAY1 = "&RELAY1=0";
         }
         else {
-          RELAY1_state = 1;
+          btn_state[0] = 1;
           strRELAY1 = "&RELAY1=1";
         }
       }
       function GetButton2() {
-        if (RELAY2_state === 1) {
-          RELAY2_state = 0;
+        if (btn_state[1] === 1) {
+          btn_state[1] = 0;
           strRELAY2 = "&RELAY2=0";
         }
         else {
-          RELAY2_state = 1;
+          btn_state[1] = 1;
           strRELAY2 = "&RELAY2=1";
         }
       }
       function GetButton3() {
-        if (RELAY3_state === 1) {
-          RELAY3_state = 0;
+        if (btn_state[2] === 1) {
+          btn_state[2] = 0;
           strRELAY3 = "&RELAY3=0";
         }
         else {
-          RELAY3_state = 1;
+          btn_state[2] = 1;
           strRELAY3 = "&RELAY3=1";
         }
       }
       function GetButton4() {
-        if (RELAY4_state === 1) {
-          RELAY4_state = 0;
+        if (btn_state[3] === 1) {
+          btn_state[3] = 0;
           strRELAY4 = "&RELAY4=0";
         }
         else {
-          RELAY4_state = 1;
+          btn_state[3] = 1;
           strRELAY4 = "&RELAY4=1";
         }
       }
       function GetButton5() {
-        if (RELAY5_state === 1) {
-          RELAY5_state = 0;
+        if (btn_state[4] === 1) {
+          btn_state[4] = 0;
           strRELAY5 = "&RELAY5=0";
         }
         else {
-          RELAY5_state = 1;
+          btn_state[4] = 1;
           strRELAY5 = "&RELAY5=1";
         }
       }
@@ -171,23 +144,23 @@
                   <tbody>
                     <tr>
                       <td><p>Button 1</p></td>
-                      <td><button type="button" id="RELAY1" class="btn btn-info" onclick="GetButton1()">Off</button></td>
+                      <td><button type="button" id="RELAY1" class="btn btn-info" onclick="GetButton1()">OFF</button></td>
                     </tr>
                     <tr>
                       <td><p>Button 2</p></td>
-                      <td><button type="button" id="RELAY2" class="btn btn-info" onclick="GetButton2()">Off</button></td>
+                      <td><button type="button" id="RELAY2" class="btn btn-info" onclick="GetButton2()">OFF</button></td>
                     </tr>
                     <tr>
                       <td><p>Button 3</p></td>
-                      <td><button type="button" id="RELAY3" class="btn btn-info" onclick="GetButton3()">Off</button></td>
+                      <td><button type="button" id="RELAY3" class="btn btn-info" onclick="GetButton3()">OFF</button></td>
                     </tr>
                     <tr>
                       <td><p>Button 4 </p></td>
-                      <td><button type="button" id="RELAY4" class="btn btn-info" onclick="GetButton4()">Off</button></td>
+                      <td><button type="button" id="RELAY4" class="btn btn-info" onclick="GetButton4()">OFF</button></td>
                     </tr>
                     <tr>
                       <td><p>Button 5</p></td>
-                      <td><button type="button" id="RELAY5" class="btn btn-info" onclick="GetButton5()">Off</button></td>
+                      <td><button type="button" id="RELAY5" class="btn btn-info" onclick="GetButton5()">OFF</button></td>
                     </tr>
                   </tbody>
                 </table>
