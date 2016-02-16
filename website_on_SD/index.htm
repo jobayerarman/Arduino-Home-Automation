@@ -1,31 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
-  <title>Arduino HAP</title>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
+    <title>Arduino HAP</title>
 
-  <script>
-    strRELAY1 = "";
-    strRELAY2 = "";
-    strRELAY3 = "";
-    strRELAY4 = "";
-    strRELAY5 = "";
+    <script>
+      strBTN = "";
+      var btn_state = [0];
 
-    var btn_state = [0];
-
-    function GetArduinoIO() {
-      nocache = "&nocache=" + Math.random() * 10000;
-      var request = new XMLHttpRequest();
-      request.onreadystatechange = function() {
-        if (this.readyState == 4) {
-          if (this.status == 200) {
-            if (this.responseXML != null) {
+      function GetArduinoIO() {
+        nocache = "&nocache=" + Math.random() * 10000;
+        var request = new XMLHttpRequest();
+        request.onreadystatechange = function() {
+          if (this.readyState == 4) {
+            if (this.status == 200) {
+              if (this.responseXML != null) {
                 // XML file received
-
-                // Temperature
-                document.getElementById("celsius").innerHTML = this.responseXML.getElementsByTagName("temp")[0].childNodes[0].nodeValue;
 
                 var response;
                 var num_BTNs;
@@ -45,71 +37,30 @@
                   else {
                     document.getElementById(btnstr).innerHTML = "OFF";
                     btn_state[i] = 0;
-                  };
-                };
+                  }
+                }
+
+                // Temperature
+                document.getElementById("celsius").innerHTML = this.responseXML.getElementsByTagName("temp")[0].childNodes[0].nodeValue;
               }
             }
           }
         }
         // send HTTP GET request with RELAYs to switch on/off if any
-        request.open("GET", "button_state" + strRELAY1 + strRELAY2 + strRELAY3 + strRELAY4 + strRELAY5 + nocache, true);
+        request.open("GET", "button_state" + strBTN + nocache, true);
         request.send(null);
-        setTimeout('GetArduinoIO()', 800);
-        strRELAY1 = "";
-        strRELAY2 = "";
-        strRELAY3 = "";
-        strRELAY4 = "";
-        strRELAY5 = "";
+        setTimeout('GetArduinoIO()', 1000);
+        strBTN = "";
       }
 
-      function GetButton1() {
-        if (btn_state[0] === 1) {
-          btn_state[0] = 0;
-          strRELAY1 = "&RELAY1=0";
+      function GetButton(btn_num_str, btn_num) {
+        if (btn_state[btn_num] === 0) {
+          strBTN += ("&" + btn_num_str + "=1");
+          btn_state[btn_num] = 1;
         }
         else {
-          btn_state[0] = 1;
-          strRELAY1 = "&RELAY1=1";
-        }
-      }
-      function GetButton2() {
-        if (btn_state[1] === 1) {
-          btn_state[1] = 0;
-          strRELAY2 = "&RELAY2=0";
-        }
-        else {
-          btn_state[1] = 1;
-          strRELAY2 = "&RELAY2=1";
-        }
-      }
-      function GetButton3() {
-        if (btn_state[2] === 1) {
-          btn_state[2] = 0;
-          strRELAY3 = "&RELAY3=0";
-        }
-        else {
-          btn_state[2] = 1;
-          strRELAY3 = "&RELAY3=1";
-        }
-      }
-      function GetButton4() {
-        if (btn_state[3] === 1) {
-          btn_state[3] = 0;
-          strRELAY4 = "&RELAY4=0";
-        }
-        else {
-          btn_state[3] = 1;
-          strRELAY4 = "&RELAY4=1";
-        }
-      }
-      function GetButton5() {
-        if (btn_state[4] === 1) {
-          btn_state[4] = 0;
-          strRELAY5 = "&RELAY5=0";
-        }
-        else {
-          btn_state[4] = 1;
-          strRELAY5 = "&RELAY5=1";
+          strBTN += ("&" + btn_num_str + "=0");
+          btn_state[btn_num] = 0;
         }
       }
     </script>
@@ -144,23 +95,23 @@
                   <tbody>
                     <tr>
                       <td><p>Button 1</p></td>
-                      <td><button type="button" id="RELAY1" class="btn btn-info" onclick="GetButton1()">OFF</button></td>
+                      <td><button type="button" id="RELAY1" class="btn btn-info" onclick="GetButton('RELAY1', '0')">OFF</button></td>
                     </tr>
                     <tr>
                       <td><p>Button 2</p></td>
-                      <td><button type="button" id="RELAY2" class="btn btn-info" onclick="GetButton2()">OFF</button></td>
+                      <td><button type="button" id="RELAY2" class="btn btn-info" onclick="GetButton('RELAY2', '1')">OFF</button></td>
                     </tr>
                     <tr>
                       <td><p>Button 3</p></td>
-                      <td><button type="button" id="RELAY3" class="btn btn-info" onclick="GetButton3()">OFF</button></td>
+                      <td><button type="button" id="RELAY3" class="btn btn-info" onclick="GetButton('RELAY3', '2')">OFF</button></td>
                     </tr>
                     <tr>
                       <td><p>Button 4 </p></td>
-                      <td><button type="button" id="RELAY4" class="btn btn-info" onclick="GetButton4()">OFF</button></td>
+                      <td><button type="button" id="RELAY4" class="btn btn-info" onclick="GetButton('RELAY4', '3')">OFF</button></td>
                     </tr>
                     <tr>
                       <td><p>Button 5</p></td>
-                      <td><button type="button" id="RELAY5" class="btn btn-info" onclick="GetButton5()">OFF</button></td>
+                      <td><button type="button" id="RELAY5" class="btn btn-info" onclick="GetButton('RELAY5', '4')">OFF</button></td>
                     </tr>
                   </tbody>
                 </table>
