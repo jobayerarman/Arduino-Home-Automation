@@ -74,6 +74,17 @@ void setup() {
     pinMode(10, OUTPUT);
     digitalWrite(10, HIGH);
 
+    Serial.begin(9600);       // for debugging
+
+    if (!SD.begin(4)) {
+        Serial.println("ERROR - SD card initialization failed!");
+        return;    // init failed
+    }
+    if (!SD.exists("index.htm")) {
+        Serial.println("ERROR - Can't find index.htm file!");
+        return;  // can't find index file
+    }
+
     // Switches
     pinMode(5, OUTPUT);
     pinMode(6, OUTPUT);
