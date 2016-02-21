@@ -31,3 +31,6 @@ Update 2.0
 Update 4.0
 
 ![](https://github.com/jobayerarman/Arduino-Home-Automation/blob/master/screenshot/HomeAutomation-4.0.jpg)
+
+## Need help?
+Feel free to [create an issue](https://github.com/jobayerarman/Arduino-Home-Automation/issues), [tweet me](https://twitter.com/JobayerArman), or [send me an email](mailto:carbonjha@gmail.com). I'd be glad to help where I can!
