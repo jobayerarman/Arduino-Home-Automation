@@ -31,6 +31,7 @@
                 - analog output removed
                 - switch removed
                 - description update
+
                 28 March 2015
                 - Temperature sensor added
                 - Redesigned website
