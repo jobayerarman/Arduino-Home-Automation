@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Home Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .temperature {
+            font-size: 48px;
+            font-weight: bold;
+            color: #667eea;
+            display: inline-block;
+        }
+
+        .temp-unit {
+            font-size: 24px;
+            color: #999;
+        }
+
+        .system-info {
+            color: #666;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h2 {
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .relay-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: #f5f5f5;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .relay-item:hover {
+            background: #e8e8e8;
+        }
+
+        .relay-item.active {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+        }
+
+        .relay-name {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .relay-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ccc;
+        }
+
+        .status-indicator.on {
+            background: #4caf50;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+        }
+
+        .relay-info {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        .toggle-btn {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn.on {
+            background: #4caf50;
+            color: white;
+        }
+
+        .toggle-btn.on:hover {
+            background: #45a049;
+        }
+
+        .toggle-btn.off {
+            background: #f44336;
+            color: white;
+        }
+
+        .toggle-btn.off:hover {
+            background: #da190b;
+        }
+
+        .scene-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .scene-btn {
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            background: #667eea;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .scene-btn:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .timer-input {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .timer-input input,
+        .timer-input select {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .timer-input button {
+            padding: 8px 15px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .timer-input button:hover {
+            background: #5568d3;
+        }
+
+        .countdown {
+            font-size: 14px;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .stats-grid {
+            display: grid;
+            gap: 10px;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 5px;
+        }
+
+        .stat-label {
+            color: #666;
+        }
+
+        .stat-value {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .automation-toggle {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .automation-toggle.enabled {
+            background: #4caf50;
+            color: white;
+        }
+
+        .automation-toggle.disabled {
+            background: #f44336;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .scene-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #999;
+        }
+
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏠 Smart Home Dashboard</h1>
+            <div class="temperature">
+                <span id="temperature">--</span><span class="temp-unit">°C</span>
+            </div>
+            <div class="system-info">
+                <span>Uptime: <strong id="uptime">--</strong></span> |
+                <span>Free RAM: <strong id="ram">--</strong> bytes</span> |
+                <span>Last Update: <strong id="lastUpdate">--</strong></span>
+            </div>
+        </div>
+
+        <div class="grid">
+            <!-- Relay Control -->
+            <div class="card">
+                <h2>🔌 Device Control</h2>
+                <div id="relayList">
+                    <div class="loading">Loading devices...</div>
+                </div>
+            </div>
+
+            <!-- Quick Scenes -->
+            <div class="card">
+                <h2>🎬 Quick Scenes</h2>
+                <div class="scene-buttons">
+                    <button class="scene-btn" onclick="activateScene('good_morning')">
+                        ☀️ Good Morning
+                    </button>
+                    <button class="scene-btn" onclick="activateScene('good_night')">
+                        🌙 Good Night
+                    </button>
+                    <button class="scene-btn" onclick="activateScene('away')">
+                        🏃 Away
+                    </button>
+                    <button class="scene-btn" onclick="activateScene('party')">
+                        🎉 Party
+                    </button>
+                    <button class="scene-btn" onclick="activateScene('movie_night')">
+                        🎬 Movie Night
+                    </button>
+                    <button class="scene-btn" onclick="activateScene('all_off')">
+                        ⭕ All OFF
+                    </button>
+                </div>
+            </div>
+
+            <!-- Timer Control -->
+            <div class="card">
+                <h2>⏱️ Timers</h2>
+                <div class="timer-input">
+                    <select id="timerRelay">
+                        <option value="0">Living Room</option>
+                        <option value="1">Master Bed</option>
+                        <option value="2">Guest Room</option>
+                        <option value="3">Kitchen</option>
+                        <option value="4">Wash Room</option>
+                    </select>
+                    <input type="number" id="timerDuration" placeholder="Minutes" min="1" value="30">
+                    <button onclick="setTimer()">Set Timer</button>
+                </div>
+                <div id="activeTimers"></div>
+            </div>
+
+            <!-- Statistics -->
+            <div class="card">
+                <h2>📊 Statistics</h2>
+                <div class="stats-grid" id="statistics">
+                    <div class="loading">Loading statistics...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const UPDATE_INTERVAL = 2000;  // Update every 2 seconds
+        let updateTimer;
+
+        // Initialize on page load
+        window.onload = function() {
+            updateStatus();
+            updateStats();
+            updateTimer = setInterval(updateStatus, UPDATE_INTERVAL);
+        };
+
+        // Fetch and update system status
+        function updateStatus() {
+            fetch('/api/status')
+                .then(response => response.json())
+                .then(data => {
+                    // Update temperature
+                    document.getElementById('temperature').textContent = data.temperature || '--';
+
+                    // Update system info
+                    if (data.system) {
+                        const uptime = formatUptime(data.system.uptime);
+                        document.getElementById('uptime').textContent = uptime;
+                        document.getElementById('ram').textContent = data.system.free_ram;
+                    }
+
+                    // Update last update time
+                    const now = new Date();
+                    document.getElementById('lastUpdate').textContent = now.toLocaleTimeString();
+
+                    // Update relays
+                    if (data.relays) {
+                        renderRelays(data.relays);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching status:', error);
+                });
+        }
+
+        // Render relay list
+        function renderRelays(relays) {
+            const container = document.getElementById('relayList');
+            container.innerHTML = '';
+
+            relays.forEach((relay, index) => {
+                const item = document.createElement('div');
+                item.className = 'relay-item' + (relay.state ? ' active' : '');
+
+                let timerInfo = '';
+                if (relay.timer) {
+                    const minutes = Math.floor(relay.timer / 60);
+                    const seconds = relay.timer % 60;
+                    timerInfo = `<div class="countdown">⏱️ OFF in ${minutes}:${seconds.toString().padStart(2, '0')}</div>`;
+                }
+
+                item.innerHTML = `
+                    <div>
+                        <div class="relay-name">${relay.name}</div>
+                        ${timerInfo}
+                    </div>
+                    <div class="relay-status">
+                        <span class="status-indicator ${relay.state ? 'on' : ''}"></span>
+                        <button class="toggle-btn ${relay.state ? 'on' : 'off'}"
+                                onclick="toggleRelay(${relay.id}, ${!relay.state})">
+                            ${relay.state ? 'ON' : 'OFF'}
+                        </button>
+                    </div>
+                `;
+
+                container.appendChild(item);
+            });
+        }
+
+        // Toggle relay state
+        function toggleRelay(id, state) {
+            fetch(`/api/relay?id=${id}&state=${state ? 1 : 0}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'ok') {
+                        updateStatus();  // Refresh status
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error toggling relay:', error);
+                    alert('Failed to toggle relay');
+                });
+        }
+
+        // Activate scene
+        function activateScene(sceneName) {
+            fetch(`/api/scene?name=${sceneName}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'ok') {
+                        updateStatus();  // Refresh status
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error activating scene:', error);
+                    alert('Failed to activate scene');
+                });
+        }
+
+        // Set timer
+        function setTimer() {
+            const relay = document.getElementById('timerRelay').value;
+            const minutes = document.getElementById('timerDuration').value;
+            const seconds = minutes * 60;
+
+            fetch(`/api/timer?relay=${relay}&duration=${seconds}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'ok') {
+                        alert(`Timer set: Device will turn OFF in ${minutes} minutes`);
+                        updateStatus();
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error setting timer:', error);
+                    alert('Failed to set timer');
+                });
+        }
+
+        // Update statistics
+        function updateStats() {
+            fetch('/api/stats')
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById('statistics');
+                    container.innerHTML = '';
+
+                    // Temperature stats
+                    if (data.temperature) {
+                        container.innerHTML += `
+                            <div class="stat-item">
+                                <span class="stat-label">🌡️ Current Temp</span>
+                                <span class="stat-value">${data.temperature.current}°C</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">📈 Max Today</span>
+                                <span class="stat-value">${data.temperature.max}°C</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">📉 Min Today</span>
+                                <span class="stat-value">${data.temperature.min}°C</span>
+                            </div>
+                        `;
+                    }
+
+                    // Device usage
+                    if (data.stats) {
+                        data.stats.forEach(stat => {
+                            const hours = Math.floor(stat.on_time / 3600);
+                            const minutes = Math.floor((stat.on_time % 3600) / 60);
+                            container.innerHTML += `
+                                <div class="stat-item">
+                                    <span class="stat-label">${stat.name}</span>
+                                    <span class="stat-value">${hours}h ${minutes}m</span>
+                                </div>
+                            `;
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching statistics:', error);
+                });
+
+            // Update stats every 30 seconds
+            setTimeout(updateStats, 30000);
+        }
+
+        // Format uptime
+        function formatUptime(seconds) {
+            const days = Math.floor(seconds / 86400);
+            const hours = Math.floor((seconds % 86400) / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+
+            if (days > 0) {
+                return `${days}d ${hours}h`;
+            } else if (hours > 0) {
+                return `${hours}h ${minutes}m`;
+            } else {
+                return `${minutes}m`;
+            }
+        }
+    </script>
+</body>
+</html>
